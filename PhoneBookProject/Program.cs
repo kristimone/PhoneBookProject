@@ -88,8 +88,6 @@ namespace PhoneBookProject
                 EntryType = PhoneEntryType.CELLPHONE
             });
 
-            //binaryFileManager.Iterate(true);
-
 
             foreach (var item in binaryFileManager.Iterate(true))
             {

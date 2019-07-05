@@ -54,19 +54,6 @@ namespace PhoneBook.Library.Source.BinaryFile
             var tmp = new List<PhoneEntryModel>();
             var foo = new PhoneEntryModel();
 
-            //using (var file = File.Open(Constants.FilePath, FileMode.Open))
-            //{
-            //    while ((foo = Serializer.DeserializeWithLengthPrefix<PhoneEntryModel>(file, ProtoBuf.PrefixStyle.Base128, 1)) != null)
-            //    {
-            //        tmp.Add(foo);
-            //    }
-            //}
-
-            //while( (foo = ReadFromBinaryFile<PhoneEntryModel>(Constants.FilePath)) != null)
-            //{
-            //    tmp.Add(foo);
-            //}
-
             tmp = ReadFromBinaryFile<List<PhoneEntryModel>>(Constants.FilePath) ?? new List<PhoneEntryModel>();
 
             return tmp;
@@ -79,11 +66,6 @@ namespace PhoneBook.Library.Source.BinaryFile
 
             if (phoneEntries.Any(x => x.Id == entry.Id)) return false;
 
-            //using (var file = File.Open(Constants.FilePath, FileMode.Append))
-            //{
-            //    Serializer.SerializeWithLengthPrefix(file, entry, PrefixStyle.Base128, 1);
-            //    file.SetLength(file.Position);
-            //}
             phoneEntries.Add(entry);
             WriteToBinaryFile<List<PhoneEntryModel>>(Constants.FilePath, phoneEntries, false);
 
@@ -108,12 +90,6 @@ namespace PhoneBook.Library.Source.BinaryFile
                 }
             }
 
-            //using (var file = File.Open(Constants.FilePath, FileMode.Truncate))
-            //{
-            //    Serializer.SerializeWithLengthPrefix(file, phoneEntries, PrefixStyle.Base128, 1);
-            //    //file.SetLength(file.Position);
-            //}
-
             WriteToBinaryFile<List<PhoneEntryModel>>(Constants.FilePath,phoneEntries,false);
 
             return true;
@@ -130,22 +106,11 @@ namespace PhoneBook.Library.Source.BinaryFile
 
             phoneEntries.RemoveAll(x => x.Id == entry.Id);
 
-            //using (var file = File.Open(Constants.FilePath, FileMode.Open))
-            //{
-            //    Serializer.SerializeWithLengthPrefix(file, phoneEntries, PrefixStyle.Base128, 1);
-            //    file.SetLength(file.Position);
-            //}
-
             WriteToBinaryFile<List<PhoneEntryModel>>(Constants.FilePath,phoneEntries);
 
             return true;
         }
 
-        /// <summary>
-        ///     Returns the list of all entries in the phone book
-        /// </summary>
-        /// <param name="orderByFirstName"></param>
-        /// <returns></returns>
         public List<PhoneEntryModel> Iterate(bool orderByFirstName)
         {
             var phoneEntries = GetAll().ToList();
