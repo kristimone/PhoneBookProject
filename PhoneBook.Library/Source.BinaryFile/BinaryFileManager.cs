@@ -142,7 +142,7 @@ namespace PhoneBook.Library.Source.BinaryFile
         }
 
         /// <summary>
-        ///     Returns the list of
+        ///     Returns the list of all entries in the phone book
         /// </summary>
         /// <param name="orderByFirstName"></param>
         /// <returns></returns>
