@@ -9,8 +9,9 @@ using PhoneBook.Library.Models;
 namespace PhoneBook.Library.Source.BinaryFile
 {
     public class BinaryFileManager : IPhoneBook
-    {
-        private bool FileExists => File.Exists(Constants.FilePath);
+    {        
+        /// Create a new binary file if it doesnt exist, if the file exist and has a length bigger than 10 MB it will be deleted and recreated again.
+        /// If the file is created, the file will be open for append.
         public bool CreateFile()
         {
             var flagToReturn = false;
@@ -43,12 +44,13 @@ namespace PhoneBook.Library.Source.BinaryFile
             catch (Exception ex)
             {
                 flagToReturn = false;
-
             }
 
             return flagToReturn;
         }
 
+        /// Get all entries from the file after been deserialized and write it to a list of objects.
+        /// <typeparam name="List<PhoneEntryModel>">The list of object that will be written from the file.</typeparam>
         public List<PhoneEntryModel> GetAll()
         {
             var tmp = new List<PhoneEntryModel>();
@@ -58,6 +60,10 @@ namespace PhoneBook.Library.Source.BinaryFile
 
             return tmp;
         }
+
+        /// Add an object to the list and write the list to a binary file.
+        /// <typeparam name="bool">The boolean type if an objected is added to the list and the list is written to the binary file function will return true</typeparam>
+        /// <param name="entry">The PhoneEntryModel instance object.</param>
         public bool Add(PhoneEntryModel entry)
         {
             var phoneEntries = GetAll().ToList();
@@ -72,6 +78,9 @@ namespace PhoneBook.Library.Source.BinaryFile
             return true;
         }
 
+        /// Edit an object from the list after been deserialized and write the new list to a binary file.
+        /// <typeparam name="bool">The boolean type if an objected is edited from the list and the new list is written to a file with the new edited object function will return true</typeparam>
+        /// <param name="entry">The PhoneEntryModel instance object.</param>
         public bool Edit(PhoneEntryModel entry)
         {
             var phoneEntries = GetAll().ToList();
@@ -95,6 +104,9 @@ namespace PhoneBook.Library.Source.BinaryFile
             return true;
         }
 
+        /// Delete an object from the list after been deserialized and write the new list to a binary file.
+        /// <typeparam name="bool">The boolean type if an objected is deleted from the list and the new list is written without that object to a file function will return true</typeparam>
+        /// <param name="entry">The PhoneEntryModel instance object.</param>
         public bool Delete(PhoneEntryModel entry)
         {
             var phoneEntries = GetAll().ToList();
@@ -111,6 +123,9 @@ namespace PhoneBook.Library.Source.BinaryFile
             return true;
         }
 
+        /// Iterate the list with objects by order of the firstname or lastname and writes the given object instance to a binary file.
+        /// <typeparam name="List<PhoneEntryModel>">The list of object with phone entries being iterating and written to the binary file.</typeparam>
+        /// <param name="orderByFirstName">The boolean value if it is true the list will order by firstname, if it is false the list will order by lastname.</param>
         public List<PhoneEntryModel> Iterate(bool orderByFirstName)
         {
             var phoneEntries = GetAll().ToList();
@@ -123,14 +138,14 @@ namespace PhoneBook.Library.Source.BinaryFile
             else
                 phoneEntries = phoneEntries.OrderBy(p => p.LastName).ToList();
 
+            WriteToBinaryFile<List<PhoneEntryModel>>(Constants.FilePath, phoneEntries);
+
             return phoneEntries;
         }
 
-        /// <summary>
         /// Writes the given object instance to a binary file.
         /// <para>Object type (and all child types) must be decorated with the [Serializable] attribute.</para>
         /// <para>To prevent a variable from being serialized, decorate it with the [NonSerialized] attribute; cannot be applied to properties.</para>
-        /// </summary>
         /// <typeparam name="T">The type of object being written to the binary file.</typeparam>
         /// <param name="filePath">The file path to write the object instance to.</param>
         /// <param name="objectToWrite">The object instance to write to the binary file.</param>
@@ -144,9 +159,7 @@ namespace PhoneBook.Library.Source.BinaryFile
             }
         }
 
-        /// <summary>
         /// Reads an object instance from a binary file.
-        /// </summary>
         /// <typeparam name="T">The type of object to read from the binary file.</typeparam>
         /// <param name="filePath">The file path to read the object instance from.</param>
         /// <returns>Returns a new instance of the object read from the binary file.</returns>
@@ -157,7 +170,7 @@ namespace PhoneBook.Library.Source.BinaryFile
                 if (stream.Length == 0)
                     return default(T);
 
-                    var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
                 return (T)binaryFormatter.Deserialize(stream);
             }
         }

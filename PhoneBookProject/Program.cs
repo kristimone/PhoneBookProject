@@ -94,8 +94,6 @@ namespace PhoneBookProject
                 Console.WriteLine(item);
             }
 
-            Console.WriteLine("*".PadRight(20,'*'));
-
             foreach (var item in binaryFileManager.Iterate(false))
             {
                 Console.WriteLine(item);
