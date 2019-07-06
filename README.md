@@ -1,4 +1,4 @@
-# PhoneBookProject
+PhoneBookProject
 To do this project I have decided to use binary file to store the entries.
 I have decided to use binary file because it was one of the choices that I was allowed to do in
 my project.
