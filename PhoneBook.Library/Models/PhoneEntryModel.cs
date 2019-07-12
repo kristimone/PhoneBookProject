@@ -2,6 +2,8 @@
 
 namespace PhoneBook.Library.Models
 {
+    ///
+    /// Class PhoneEntryModel which I stored: id, firstname, lastname, entrytype, phonenumber of the entry. 
     [Serializable]
     public class PhoneEntryModel
     {

@@ -8,8 +8,21 @@ using PhoneBook.Library.Models;
 
 namespace PhoneBook.Library.Source.BinaryFile
 {
+    /// Class BinaryFileManager where I managed the functions used for my project.
     public class BinaryFileManager : IPhoneBook
-    {        
+    {
+        private readonly IPhoneBook phonebook;
+        /// Constructor with no parameters.
+        public BinaryFileManager()
+        {
+        }
+        /// Constructor which takes as parameter the interface IPhoneBook.
+        /// <param name="phonebook"></param>
+        public BinaryFileManager(IPhoneBook phonebook)
+        {
+            this.phonebook = phonebook;
+        }
+
         /// Create a new binary file if it doesnt exist, if the file exist and has a length bigger than 10 MB it will be deleted and recreated again.
         /// If the file is created, the file will be open for append.
         public bool CreateFile()
@@ -50,11 +63,10 @@ namespace PhoneBook.Library.Source.BinaryFile
         }
 
         /// Get all entries from the file after been deserialized and write it to a list of objects.
-        /// <typeparam name="List<PhoneEntryModel>">The list of object that will be written from the file.</typeparam>
+        /// <typeparam name="List">The list of object that will be written from the file.</typeparam>
         public List<PhoneEntryModel> GetAll()
         {
             var tmp = new List<PhoneEntryModel>();
-            var foo = new PhoneEntryModel();
 
             tmp = ReadFromBinaryFile<List<PhoneEntryModel>>(Constants.FilePath) ?? new List<PhoneEntryModel>();
 
@@ -124,7 +136,7 @@ namespace PhoneBook.Library.Source.BinaryFile
         }
 
         /// Iterate the list with objects by order of the firstname or lastname and writes the given object instance to a binary file.
-        /// <typeparam name="List<PhoneEntryModel>">The list of object with phone entries being iterating and written to the binary file.</typeparam>
+        /// <typeparam name="List">The list of object with phone entries being iterating and written to the binary file.</typeparam>
         /// <param name="orderByFirstName">The boolean value if it is true the list will order by firstname, if it is false the list will order by lastname.</param>
         public List<PhoneEntryModel> Iterate(bool orderByFirstName)
         {
@@ -150,7 +162,8 @@ namespace PhoneBook.Library.Source.BinaryFile
         /// <param name="filePath">The file path to write the object instance to.</param>
         /// <param name="objectToWrite">The object instance to write to the binary file.</param>
         /// <param name="append">If false the file will be overwritten if it already exists. If true the contents will be appended to the file.</param>
-        private void WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false)
+
+        public void WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false)
         {
             using (Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create))
             {
@@ -163,7 +176,7 @@ namespace PhoneBook.Library.Source.BinaryFile
         /// <typeparam name="T">The type of object to read from the binary file.</typeparam>
         /// <param name="filePath">The file path to read the object instance from.</param>
         /// <returns>Returns a new instance of the object read from the binary file.</returns>
-        private  T ReadFromBinaryFile<T>(string filePath)
+        public T ReadFromBinaryFile<T>(string filePath)
         {
             using (Stream stream = File.Open(filePath, FileMode.Open))
             {
