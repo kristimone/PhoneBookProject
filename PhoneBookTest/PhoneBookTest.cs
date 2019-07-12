@@ -15,7 +15,7 @@ namespace PhoneBook.Library.Tests
     class PhoneBookTest
     {
         [Test(Description = "Test if the file doesnt exists, creates the file")]
-        public void CreateFile_Test()
+        public void CreateFileTest()
         {
             BinaryFileManager binaryfile = new BinaryFileManager();
             if (!File.Exists(Constants.FilePath))
@@ -27,7 +27,7 @@ namespace PhoneBook.Library.Tests
         }
 
         [Test(Description = "Test if the file exists and has a length > 10MB, delete the file and create it again")]
-        public void DeleteAndCreateFile_Test()
+        public void DeleteAndCreateFileTest()
         {
             BinaryFileManager binaryfile = new BinaryFileManager(null);
             FileInfo fi = new FileInfo(Constants.FilePath);
@@ -41,7 +41,7 @@ namespace PhoneBook.Library.Tests
         }
 
         [Test(Description = "Test if the file exists, open the file")]
-        public void OpenFile_Test()
+        public void OpenFileTest()
         {
             BinaryFileManager binaryfile = new BinaryFileManager(null);
             if (File.Exists(Constants.FilePath))
@@ -53,7 +53,7 @@ namespace PhoneBook.Library.Tests
         }
 
         [Test(Description = "Test if in one list of objects are read all the entries from the file")]
-        public void GetAll_File()
+        public void GetAllFile()
         {
             var tmp = new List<PhoneEntryModel>();
             Mock<IPhoneBook> mockfile = new Mock<IPhoneBook>();
@@ -62,7 +62,7 @@ namespace PhoneBook.Library.Tests
         }
 
         [Test(Description = "Test if an entry from a list of object is written on the file")]
-        public void Add_Entry()
+        public void AddEntry()
         {
             Mock<IPhoneBook> mockfile = new Mock<IPhoneBook>();
             BinaryFileManager binaryFile = new BinaryFileManager(mockfile.Object);
@@ -80,7 +80,7 @@ namespace PhoneBook.Library.Tests
         }
 
         [Test(Description = "Test if entry is null, throws exception")]
-        public void Add_Entry_NullException()
+        public void AddEntryNullException()
         {
             Mock<IPhoneBook> mockfile = new Mock<IPhoneBook>();
             BinaryFileManager binaryFile = new BinaryFileManager(mockfile.Object);
@@ -91,7 +91,7 @@ namespace PhoneBook.Library.Tests
         }
 
         [Test(Description = "Test if an entry with the same id with an entry from a list of object is edited on the file")]
-        public void Edit_Entry()
+        public void EditEntry()
         {
             Mock<IPhoneBook> mockfile = new Mock<IPhoneBook>();
             BinaryFileManager binaryFile = new BinaryFileManager(mockfile.Object);
@@ -116,7 +116,7 @@ namespace PhoneBook.Library.Tests
         }
 
         [Test(Description = "Test if entry is null, throws exception")]
-        public void Edit_Entry_NullException()
+        public void EditEntryNullException()
         {
             Mock<IPhoneBook> mockfile = new Mock<IPhoneBook>();
             BinaryFileManager binaryFile = new BinaryFileManager(mockfile.Object);
@@ -127,7 +127,7 @@ namespace PhoneBook.Library.Tests
         }
 
         [Test(Description = "Test if id of the entry is different of the id of any of entries on the list, edit entry return false")]
-        public void Edit_Entry_DifferentId_FromFile()
+        public void EditEntryDifferentIdFromFile()
         {
             Mock<IPhoneBook> mockfile = new Mock<IPhoneBook>();
             BinaryFileManager binaryFile = new BinaryFileManager(mockfile.Object);
@@ -145,7 +145,7 @@ namespace PhoneBook.Library.Tests
         }
 
         [Test(Description = "Test if an entry from a list of object will be deleted from the file")]
-        public void Delete_Entry()
+        public void DeleteEntry()
         {
             Mock<IPhoneBook> mockfile = new Mock<IPhoneBook>();
             BinaryFileManager binaryFile = new BinaryFileManager(mockfile.Object);
@@ -162,7 +162,7 @@ namespace PhoneBook.Library.Tests
             mockfile.Setup(m => m.WriteToBinaryFile<List<PhoneEntryModel>>(Constants.FilePath, phoneEntries, false));
         }
         [Test(Description = "Test if an entry is null, throws exception")]
-        public void Delete_Entry_NullException()
+        public void DeleteEntryNullException()
         {
             Mock<IPhoneBook> mockfile = new Mock<IPhoneBook>();
             BinaryFileManager binaryFile = new BinaryFileManager(mockfile.Object);
@@ -172,7 +172,7 @@ namespace PhoneBook.Library.Tests
             mockfile.Verify(m => m.WriteToBinaryFile<List<PhoneEntryModel>>(Constants.FilePath, phoneEntries, false), Times.Never);
         }
         [Test(Description = "Test if id of the entry is different of the id of any of entries on the list, delete entry returns false")]
-        public void Delete_Entry_DifferentId_FromFile()
+        public void DeleteEntryDifferentId_FromFile()
         {
             Mock<IPhoneBook> mockfile = new Mock<IPhoneBook>();
             BinaryFileManager binaryFile = new BinaryFileManager(mockfile.Object);
@@ -189,7 +189,7 @@ namespace PhoneBook.Library.Tests
                 Assert.IsFalse(binaryFile.Delete(model));
         }
         [Test(Description = "Test if the list is null, throws Exception")]
-        public void Iterate_List_NullException()
+        public void IterateListNullException()
         {
             Mock<IPhoneBook> mockfile = new Mock<IPhoneBook>();
             BinaryFileManager binaryFile = new BinaryFileManager(mockfile.Object);
@@ -198,7 +198,7 @@ namespace PhoneBook.Library.Tests
             mockfile.Verify(m => m.WriteToBinaryFile<List<PhoneEntryModel>>(Constants.FilePath, phoneEntries, false), Times.Never);
         }
         [Test(Description = "Test if the list is iterated and order by firstname and written to file")]
-        public void Iterate_List_ByFirstName()
+        public void IterateListByFirstName()
         {
             bool orderByFirstName = true;
             Mock<IPhoneBook> mockfile = new Mock<IPhoneBook>();
@@ -209,7 +209,7 @@ namespace PhoneBook.Library.Tests
             mockfile.Setup(m => m.WriteToBinaryFile<List<PhoneEntryModel>>(Constants.FilePath, phoneEntries, false));
         }
         [Test(Description = "Test if the list is iterated and order by lastname and written to file")]
-        public void Iterate_List_ByLastName()
+        public void IterateListByLastName()
         {
             bool orderByFirstName = false;
             Mock<IPhoneBook> mockfile = new Mock<IPhoneBook>();

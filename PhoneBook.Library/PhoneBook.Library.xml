@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PhoneBook.Library</name>
+    </assembly>
+    <members>
+        <member name="T:PhoneBook.Library.Constants">
+            Class Constants where I stored some constants variables that I was going to use in my project.
+        </member>
+        <member name="P:PhoneBook.Library.Constants.FileName">
+            the name of the file that I was going to use.
+        </member>
+        <member name="P:PhoneBook.Library.Constants.FileLocation">
+            the current directory where the file it will be stored.
+        </member>
+        <member name="P:PhoneBook.Library.Constants.FilePath">
+            the full path where my file it will be stored.
+        </member>
+        <member name="P:PhoneBook.Library.Constants.FileMaxSize">
+            the maximum length of the file that is 10MB.
+        </member>
+        <member name="T:PhoneBook.Library.IPhoneBook">
+            Interface with the functions which I will use for my project.
+        </member>
+        <member name="M:PhoneBook.Library.IPhoneBook.GetAll">
+            GetAll function where I would get all the entries of the file and stored it in a list of objects.
+        </member>
+        <member name="M:PhoneBook.Library.IPhoneBook.Add(PhoneBook.Library.Models.PhoneEntryModel)">
+            Add function where I would store an instance of object to the binary file.
+        </member>
+        <member name="M:PhoneBook.Library.IPhoneBook.Edit(PhoneBook.Library.Models.PhoneEntryModel)">
+            Edit function where I would edit an entry from the binary file.
+        </member>
+        <member name="M:PhoneBook.Library.IPhoneBook.Delete(PhoneBook.Library.Models.PhoneEntryModel)">
+            Delete function where I would delete an entry from the binary file.
+        </member>
+        <member name="M:PhoneBook.Library.IPhoneBook.Iterate(System.Boolean)">
+            Iterate function where I would itereate the list of objects, order by firstname or lastname and store it in the binary file.
+        </member>
+        <member name="M:PhoneBook.Library.IPhoneBook.ReadFromBinaryFile``1(System.String)">
+            ReadFromBinaryFile function for reading entries from the binary file and store it into a list of ojects by using the method of deserialize the file.
+        </member>
+        <member name="M:PhoneBook.Library.IPhoneBook.WriteToBinaryFile``1(System.String,``0,System.Boolean)">
+            WriteToBinaryFile function for writing entries into the binary file by using the method of serialize objects.
+        </member>
+        <member name="T:PhoneBook.Library.Models.PhoneEntryModel">
+            
+             Class PhoneEntryModel which I stored: id, firstname, lastname, entrytype, phonenumber of the entry. 
+        </member>
+        <member name="T:PhoneBook.Library.PhoneEntryType">
+            PhoneEntryType which is type enum and can be a cellphone, work or home.
+        </member>
+        <member name="T:PhoneBook.Library.Source.BinaryFile.BinaryFileManager">
+            Class BinaryFileManager where I managed the functions used for my project.
+        </member>
+        <member name="M:PhoneBook.Library.Source.BinaryFile.BinaryFileManager.#ctor">
+            Constructor with no parameters.
+        </member>
+        <member name="M:PhoneBook.Library.Source.BinaryFile.BinaryFileManager.#ctor(PhoneBook.Library.IPhoneBook)">
+            Constructor which takes as parameter the interface IPhoneBook.
+            <param name="phonebook"></param>
+        </member>
+        <member name="M:PhoneBook.Library.Source.BinaryFile.BinaryFileManager.CreateFile">
+            Create a new binary file if it doesnt exist, if the file exist and has a length bigger than 10 MB it will be deleted and recreated again.
+            If the file is created, the file will be open for append.
+        </member>
+        <member name="M:PhoneBook.Library.Source.BinaryFile.BinaryFileManager.GetAll">
+            Get all entries from the file after been deserialized and write it to a list of objects.
+            <typeparam name="List">The list of object that will be written from the file.</typeparam>
+        </member>
+        <member name="M:PhoneBook.Library.Source.BinaryFile.BinaryFileManager.Add(PhoneBook.Library.Models.PhoneEntryModel)">
+            Add an object to the list and write the list to a binary file.
+            <typeparam name="bool">The boolean type if an objected is added to the list and the list is written to the binary file function will return true</typeparam>
+            <param name="entry">The PhoneEntryModel instance object.</param>
+        </member>
+        <member name="M:PhoneBook.Library.Source.BinaryFile.BinaryFileManager.Edit(PhoneBook.Library.Models.PhoneEntryModel)">
+            Edit an object from the list after been deserialized and write the new list to a binary file.
+            <typeparam name="bool">The boolean type if an objected is edited from the list and the new list is written to a file with the new edited object function will return true</typeparam>
+            <param name="entry">The PhoneEntryModel instance object.</param>
+        </member>
+        <member name="M:PhoneBook.Library.Source.BinaryFile.BinaryFileManager.Delete(PhoneBook.Library.Models.PhoneEntryModel)">
+            Delete an object from the list after been deserialized and write the new list to a binary file.
+            <typeparam name="bool">The boolean type if an objected is deleted from the list and the new list is written without that object to a file function will return true</typeparam>
+            <param name="entry">The PhoneEntryModel instance object.</param>
+        </member>
+        <member name="M:PhoneBook.Library.Source.BinaryFile.BinaryFileManager.Iterate(System.Boolean)">
+            Iterate the list with objects by order of the firstname or lastname and writes the given object instance to a binary file.
+            <typeparam name="List">The list of object with phone entries being iterating and written to the binary file.</typeparam>
+            <param name="orderByFirstName">The boolean value if it is true the list will order by firstname, if it is false the list will order by lastname.</param>
+        </member>
+        <member name="M:PhoneBook.Library.Source.BinaryFile.BinaryFileManager.WriteToBinaryFile``1(System.String,``0,System.Boolean)">
+            Writes the given object instance to a binary file.
+            <para>Object type (and all child types) must be decorated with the [Serializable] attribute.</para>
+            <para>To prevent a variable from being serialized, decorate it with the [NonSerialized] attribute; cannot be applied to properties.</para>
+            <typeparam name="T">The type of object being written to the binary file.</typeparam>
+            <param name="filePath">The file path to write the object instance to.</param>
+            <param name="objectToWrite">The object instance to write to the binary file.</param>
+            <param name="append">If false the file will be overwritten if it already exists. If true the contents will be appended to the file.</param>
+        </member>
+        <member name="M:PhoneBook.Library.Source.BinaryFile.BinaryFileManager.ReadFromBinaryFile``1(System.String)">
+            Reads an object instance from a binary file.
+            <typeparam name="T">The type of object to read from the binary file.</typeparam>
+            <param name="filePath">The file path to read the object instance from.</param>
+            <returns>Returns a new instance of the object read from the binary file.</returns>
+        </member>
+    </members>
+</doc>
