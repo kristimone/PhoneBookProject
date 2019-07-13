@@ -7,22 +7,39 @@ using System.Threading.Tasks;
 
 namespace PhoneBook.Library
 {
+    /// <summary>
     /// Interface with the functions which I will use for my project.
+    /// </summary>
     public interface IPhoneBook
-    {
-        /// GetAll function where I would get all the entries of the file and stored it in a list of objects.
+    {   
+        /// <summary>
+        /// GetAll function where I would getall entries from a file and store it in a list of object.
+        /// </summary>
+        /// <returns>List of object readed from the binary file.</returns>
         List<PhoneEntryModel> GetAll();
+        /// <summary>
         /// Add function where I would store an instance of object to the binary file.
+        /// </summary>
+        /// <param name="entry">An instance of object PhoneEntryModel</param>
+        /// <returns>boolean value true or false</returns>
         bool Add(PhoneEntryModel entry);
+        /// <summary>
         /// Edit function where I would edit an entry from the binary file.
+        /// </summary>
+        /// <param name="entry">An instance of object PhoneEntryModel</param>
+        /// <returns>boolean value true or false</returns>
         bool Edit(PhoneEntryModel entry);
+        /// <summary>
         /// Delete function where I would delete an entry from the binary file.
+        /// </summary>
+        /// <param name="entry">An instance of object PhoneEntryModel</param>
+        /// <returns>boolean value true or false</returns>
         bool Delete(PhoneEntryModel entry);
+        /// <summary>
         /// Iterate function where I would itereate the list of objects, order by firstname or lastname and store it in the binary file.
+        /// </summary>
+        /// <param name="orderByFirstName">boolean value true orderbyfirstname, false orderbylastname</param>
+        /// <returns>List of objects from PhoneEntryModel</returns>
         List<PhoneEntryModel> Iterate(bool orderByFirstName);
-        /// ReadFromBinaryFile function for reading entries from the binary file and store it into a list of ojects by using the method of deserialize the file.
-        T ReadFromBinaryFile<T>(string filePath);
-        /// WriteToBinaryFile function for writing entries into the binary file by using the method of serialize objects.
-        void WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false);
     }
 }
