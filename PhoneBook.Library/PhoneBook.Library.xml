@@ -98,11 +98,6 @@
             Class BinaryFileManager where I managed the functions used for my project.
             </summary>
         </member>
-        <member name="M:PhoneBook.Library.Source.BinaryFile.BinaryFileManager.#ctor">
-            <summary>
-            Constructor with no parameters.
-            </summary>
-        </member>
         <member name="M:PhoneBook.Library.Source.BinaryFile.BinaryFileManager.CreateFile">
             <summary>
             Create a new binary file if it doesnt exist, if the file exist and has a length bigger than 10 MB it will be deleted and recreated again.

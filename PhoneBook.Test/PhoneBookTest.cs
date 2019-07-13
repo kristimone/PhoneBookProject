@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace PhoneBook.Library.Tests
 {
@@ -120,6 +122,63 @@ namespace PhoneBook.Library.Tests
             Assert.IsTrue(binaryFile.GetAll().Any(x => x.FirstName.Equals("Mario") && x.LastName.Equals("Coku")));
 
         }
+        [Test(Description = "Test Add Function with ThreadSafety process")]
+        public void AddEntryThreadSafety()
+        {
+            var binaryFileManager = new BinaryFileManager();
+
+            var listOfTasks = new List<Task>();
+
+            var entries = binaryFileManager.GetAll();
+
+            foreach (var item in entries)
+            {
+                binaryFileManager.Delete(item);
+            }
+
+            var listOfObjects = new List<PhoneEntryModel>
+            {
+               new PhoneEntryModel
+               {
+                    Id = 1,
+                    FirstName = "Kristi",
+                    LastName = "Mone",
+                    PhoneNumber = "+355682024896",
+                    EntryType = PhoneEntryType.WORK
+               },
+
+               new PhoneEntryModel
+               {
+                    Id = 2,
+                    FirstName = "Orges",
+                    LastName = "Kreka",
+                    PhoneNumber = "+355682024896",
+                    EntryType = PhoneEntryType.WORK
+               },
+               new PhoneEntryModel
+               {
+                    Id = 3,
+                    FirstName = "Ermal",
+                    LastName = "Arapi",
+                    PhoneNumber = "+355682024896",
+                    EntryType = PhoneEntryType.WORK
+               }
+            };
+
+            foreach (var model in listOfObjects)
+            {
+                var addTask = new Task<bool>(()=> binaryFileManager.Add(model) );
+                listOfTasks.Add(addTask);
+            }
+
+            listOfTasks.ForEach(x => x.Start());
+            Task.WaitAll(listOfTasks.ToArray()); 
+
+            var tmp = binaryFileManager.GetAll();
+
+            Assert.IsTrue(tmp.Count == listOfObjects.Count);
+           
+        }
 
         [Test(Description = "Test if an entry from a list of object is written on the file")]
         public void AddEntryToPhoneBookReturnFalse()
@@ -167,7 +226,46 @@ namespace PhoneBook.Library.Tests
 
             Assert.IsTrue(result == true && binaryFile.GetAll().Any(x => x.FirstName.Equals("Endi") && x.LastName.Equals("Koci")));
         }
+        [Test(Description = "Test Edit Function with ThreadSafety process")]
+        public void EditEntryThreadSafety()
+        {
+            var binaryFileManager = new BinaryFileManager();
 
+            var listOfTasks = new List<Task>();
+
+            var entries = binaryFileManager.GetAll();
+
+            var listOfObjects = new List<PhoneEntryModel>
+            {
+               new PhoneEntryModel
+               {
+                    Id = 3,
+                    FirstName = "Petrit",
+                    LastName = "Lame",
+                    PhoneNumber = "+355682624896",
+                    EntryType = PhoneEntryType.CELLPHONE
+               }
+            };
+
+            foreach (var model in listOfObjects)
+            {
+                var addTask = new Task<bool>(() => binaryFileManager.Edit(model));
+                listOfTasks.Add(addTask);
+            }
+
+            listOfTasks.ForEach(x => x.Start());
+            Task.WaitAll(listOfTasks.ToArray());
+
+            var tmp = binaryFileManager.GetAll();
+
+            Assert.IsTrue(tmp.Count == entries.Count);
+
+            for (int i = 0; i < tmp.Count; i++)
+            {
+                Assert.IsTrue(tmp[i].FirstName != entries[i].FirstName);
+                break;
+            }
+        }
 
         [Test(Description = "Test if id of the entry is different of the id of any of entries on the list, edit entry return false")]
         public void EditEntryDifferentIdFromFile()
@@ -214,7 +312,43 @@ namespace PhoneBook.Library.Tests
 
             Assert.IsTrue(result && !binaryFileManager.GetAll().Any(x => x.Id == model.Id));
         }
-  
+
+        [Test(Description = "Test Delete Function with ThreadSafety process")]
+        public void DeleteEntryThreadSafety()
+        {
+            var binaryFileManager = new BinaryFileManager();
+
+            var listOfTasks = new List<Task>();
+
+            var entries = binaryFileManager.GetAll();
+
+            var listOfObjects = new List<PhoneEntryModel>
+            {
+               new PhoneEntryModel
+               {
+                    Id = 2,
+                    FirstName = "Orges",
+                    LastName = "Kreka",
+                    PhoneNumber = "+355682024896",
+                    EntryType = PhoneEntryType.WORK
+               }
+            };
+
+            foreach (var model in listOfObjects)
+            {
+                var addTask = new Task<bool>(() => binaryFileManager.Delete(model));
+                listOfTasks.Add(addTask);
+            }
+
+            listOfTasks.ForEach(x => x.Start());
+            Task.WaitAll(listOfTasks.ToArray());
+
+            var tmp = binaryFileManager.GetAll();
+
+            Assert.IsTrue(tmp.Count == (entries.Count - listOfObjects.Count));
+
+        }
+
         [Test(Description = "Test if id of the entry is different of the id of any of entries on the list, delete entry returns false")]
         public void DeleteEntryDifferentId_FromFile()
         {

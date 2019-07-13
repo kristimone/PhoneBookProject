@@ -13,12 +13,7 @@ namespace PhoneBook.Library.Source.BinaryFile
     {
         private readonly object _sysObject = new Object();
 
-        /// <summary>
-        /// Constructor with no parameters.
-        /// </summary>
-        public BinaryFileManager()
-        {
-        }
+
 
         /// <summary>
         /// Create a new binary file if it doesnt exist, if the file exist and has a length bigger than 10 MB it will be deleted and recreated again.
@@ -69,14 +64,11 @@ namespace PhoneBook.Library.Source.BinaryFile
         /// <returns>List of objects with PhoneEntry read it from the binary file</returns>
         public List<PhoneEntryModel> GetAll()
         {
-            lock (_sysObject)
-            {
                 var tmp = new List<PhoneEntryModel>();
 
                 tmp = ReadFromBinaryFile<List<PhoneEntryModel>>(Constants.FilePath) ?? new List<PhoneEntryModel>();
 
                 return tmp;
-            }
         }
 
         /// <summary>
@@ -167,8 +159,6 @@ namespace PhoneBook.Library.Source.BinaryFile
         /// <returns>List of objects with entries ordered by firstname if orderByFirstName is true and ordered by lastname if orderByFirstName is false</returns>
         public List<PhoneEntryModel> Iterate(bool orderByFirstName)
         {
-            lock (_sysObject)
-            {
                 var phoneEntries = GetAll().ToList();
 
                 if (phoneEntries == null)
@@ -182,7 +172,6 @@ namespace PhoneBook.Library.Source.BinaryFile
                 WriteToBinaryFile<List<PhoneEntryModel>>(Constants.FilePath, phoneEntries);
 
                 return phoneEntries;
-            }
         }
 
         /// Writes the given object instance to a binary file.

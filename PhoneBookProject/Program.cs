@@ -12,7 +12,7 @@ namespace PhoneBookProject
 
             var binaryFileManager = new BinaryFileManager();
 
-            if(!binaryFileManager.CreateFile())
+            if (!binaryFileManager.CreateFile())
             {
                 Console.WriteLine("Gabim gjate krijimit te skedarit");
                 return;
